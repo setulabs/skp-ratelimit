@@ -6,7 +6,7 @@ keywords = ["rate-limit", "gcra", "api", "middleware", "throttle"]
 license = "MIT"
 name = "skp-ratelimit"
 publish = true
-version = "0.1.1"
+version = "0.1.2"
 repository = "https://github.com/setulabs/skp-ratelimit"
 homepage = "https://www.setulab.com/projects"
 
