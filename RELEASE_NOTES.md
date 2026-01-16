@@ -1,3 +1,15 @@
+
+# 🚀 skp-ratelimit v0.1.2
+
+**Relaxed Trait Bounds & Improved Integration**
+
+## ✨ Features
+
+### 🛠️ Integration Improvements
+- **Relaxed Clone Bounds**: `RateLimitLayer` no longer requires the underlying storage to implement `Clone`. It handles `Arc` wrapping internally and implements `Clone` manually. This allows direct usage of simple storage types like `MemoryStorage` with Axum without complex workarounds.
+- **Flexible Storage Types**: Added blanket `Storage` trait implementations for `Arc<S>` and `Box<S>`, allowing users to pass pre-wrapped storage instances or unique owners while maintaining trait compatibility.
+
+---
 # 🚀 skp-ratelimit v0.1.0
 
 **Advanced, modular rate limiting library for Rust**
