@@ -1,5 +1,5 @@
 [package]
-categories = ["web-programming", "ratelimiting", "api", "middleware"]
+categories = ["web-programming", "asynchronous", "algorithms", "security"]
 description = "Advanced, modular, extensible rate limiting library with GCRA, per-route quotas, and composite keys"
 edition = "2024"
 keywords = ["rate-limit", "gcra", "api", "middleware", "throttle"]
