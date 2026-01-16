@@ -9,7 +9,7 @@ use crate::key::Key;
 /// # Example
 ///
 /// ```ignore
-/// use oc_ratelimit_advanced::key::{CompositeKey, IpKey, PathKey};
+/// use skp_ratelimit::key::{CompositeKey, IpKey, PathKey};
 ///
 /// // Rate limit by IP + path
 /// let key = CompositeKey::new(IpKey::new(), PathKey::new());

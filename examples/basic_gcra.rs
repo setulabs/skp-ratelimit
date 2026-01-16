@@ -2,10 +2,10 @@
 //!
 //! Run with:
 //! ```
-//! cargo run -p oc_ratelimit_advanced --example basic_gcra --features memory
+//! cargo run --example basic_gcra --features memory
 //! ```
 
-use oc_ratelimit_advanced::{
+use skp_ratelimit::{
     Algorithm, MemoryStorage, GCRA, Quota,
 };
 use std::time::Duration;

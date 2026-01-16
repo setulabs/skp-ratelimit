@@ -62,7 +62,7 @@ impl RedisConfig {
 /// # Example
 ///
 /// ```ignore
-/// use oc_ratelimit_advanced::storage::{RedisStorage, RedisConfig};
+/// use skp_ratelimit::storage::{RedisStorage, RedisConfig};
 ///
 /// let config = RedisConfig::new("redis://localhost:6379")
 ///     .with_prefix("myapp:rl:")
@@ -189,25 +189,25 @@ impl Storage for RedisStorage {
             .await
             .map_err(|e| StorageError::operation_failed(e.to_string(), true))?;
 
-        let (new_count, should_reset) = match current {
+        let new_count = match current {
             Some(json) => {
                 if let Ok(entry) = serde_json::from_str::<StorageEntry>(&json) {
                     if entry.window_start == window_start {
-                        (entry.count + delta, false)
+                        entry.count + delta
                     } else {
-                        (delta, true)
+                        delta
                     }
                 } else {
-                    (delta, true)
+                    delta
                 }
             }
-            None => (delta, true),
+            None => delta,
         };
 
         let now = crate::storage::current_timestamp_ms();
         let new_entry = StorageEntry {
             count: new_count,
-            window_start: if should_reset { window_start } else { window_start },
+            window_start,
             last_update: now,
             ..Default::default()
         };

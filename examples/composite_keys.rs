@@ -2,10 +2,10 @@
 //!
 //! Run with:
 //! ```
-//! cargo run -p oc_ratelimit_advanced --example composite_keys --features memory
+//! cargo run --example composite_keys --features memory
 //! ```
 
-use oc_ratelimit_advanced::{
+use skp_ratelimit::{
     algorithm::Algorithm, key::{CompositeKey, Key}, storage::MemoryStorage, GCRA, Quota,
 };
 
@@ -13,13 +13,14 @@ use oc_ratelimit_advanced::{
 struct MockRequest {
     ip: String,
     path: String,
+    #[allow(dead_code)]
     user_id: Option<String>,
 }
 
 /// Custom key extractor for IP
 struct IpExtractor;
 
-impl oc_ratelimit_advanced::key::Key<MockRequest> for IpExtractor {
+impl skp_ratelimit::key::Key<MockRequest> for IpExtractor {
     fn extract(&self, request: &MockRequest) -> Option<String> {
         Some(format!("ip:{}", request.ip))
     }
@@ -32,7 +33,7 @@ impl oc_ratelimit_advanced::key::Key<MockRequest> for IpExtractor {
 /// Custom key extractor for path
 struct PathExtractor;
 
-impl oc_ratelimit_advanced::key::Key<MockRequest> for PathExtractor {
+impl skp_ratelimit::key::Key<MockRequest> for PathExtractor {
     fn extract(&self, request: &MockRequest) -> Option<String> {
         Some(format!("path:{}", request.path))
     }

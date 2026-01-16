@@ -1,17 +1,17 @@
 //! Advanced, modular rate limiting library for Rust.
 //!
-//! `oc_ratelimit_advanced` provides a comprehensive rate limiting solution with:
+//! `skp_ratelimit` provides a comprehensive rate limiting solution with:
 //!
 //! - **Multiple Algorithms**: GCRA, Token Bucket, Leaky Bucket, Sliding Log, and more
-//! - **Pluggable Storage**: In-memory with GC, Redis (coming soon)
+//! - **Pluggable Storage**: In-memory with GC, Redis with connection pooling
 //! - **Per-Route Quotas**: Different limits for different endpoints
 //! - **Composite Keys**: Rate limit by IP + Path, User + API Key, etc.
-//! - **Framework Integration**: Axum middleware (coming soon)
+//! - **Framework Integration**: Axum and Actix-web middleware
 //!
 //! # Quick Start
 //!
 //! ```ignore
-//! use oc_ratelimit_advanced::{GCRA, Quota, MemoryStorage, Algorithm};
+//! use skp_ratelimit::{GCRA, Quota, MemoryStorage, Algorithm};
 //! use std::time::Duration;
 //!
 //! #[tokio::main]
@@ -132,7 +132,6 @@ pub mod prelude {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::time::Duration;
 
     #[cfg(feature = "memory")]
     #[tokio::test]

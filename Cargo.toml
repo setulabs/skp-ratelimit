@@ -3,12 +3,12 @@ categories = ["web-programming", "caching", "asynchronous"]
 description = "Advanced, modular, extensible rate limiting library with GCRA, per-route quotas, and composite keys"
 edition = "2024"
 keywords = ["rate-limit", "gcra", "api", "middleware", "throttle"]
+license = "MIT"
 name = "skp-ratelimit"
 publish = true
 version = "0.1.0"
 
 # [lints]
-# workspace = true
 
 [features]
 default = ["memory", "all-algorithms"]
@@ -37,7 +37,7 @@ parking_lot = { version = "0.12.5" }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = { version = "1.0.149" }
 thiserror = { version = "2.0.17" }
-tokio = { version = "1.49.0", features = ["time", "sync", "rt"] }
+tokio = { version = "1.49.0", features = ["time", "sync", "rt", "macros"] }
 tracing = { version = "0.1.44" }
 
 # Memory storage

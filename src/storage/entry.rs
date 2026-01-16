@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// This struct contains all state needed by rate limiting algorithms,
 /// designed to be flexible enough for any algorithm type.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq)]
 pub struct StorageEntry {
     /// Request count (for window-based algorithms).
     pub count: u64,
@@ -131,21 +131,6 @@ impl StorageEntry {
     /// Get TAT, defaulting to 0 if not set.
     pub fn tat_or_default(&self) -> u64 {
         self.tat.unwrap_or(0)
-    }
-}
-
-impl Default for StorageEntry {
-    fn default() -> Self {
-        Self {
-            count: 0,
-            window_start: 0,
-            tat: None,
-            tokens: None,
-            last_update: 0,
-            prev_count: None,
-            timestamps: None,
-            metadata: None,
-        }
     }
 }
 

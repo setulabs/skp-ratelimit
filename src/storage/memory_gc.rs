@@ -96,7 +96,7 @@ struct InternalEntry {
 /// # Example
 ///
 /// ```ignore
-/// use oc_ratelimit_advanced::storage::{MemoryStorage, GcConfig};
+/// use skp_ratelimit::storage::{MemoryStorage, GcConfig};
 /// use std::time::Duration;
 ///
 /// // Default GC (every 10000 requests)
@@ -113,6 +113,7 @@ pub struct MemoryStorage {
     data: DashMap<String, InternalEntry>,
     gc_config: GcConfig,
     request_count: AtomicU64,
+    #[allow(dead_code)]
     last_gc: AtomicU64,
     gc_lock: Mutex<()>,
     shutdown: Arc<Notify>,
@@ -202,7 +203,7 @@ impl MemoryStorage {
     fn maybe_run_gc(&self) {
         if let GcInterval::Requests(threshold) = self.gc_config.interval {
             let count = self.request_count.fetch_add(1, Ordering::Relaxed);
-            if count % threshold == 0 && count > 0 {
+            if count.is_multiple_of(threshold) && count > 0 {
                 // Try to acquire GC lock (non-blocking)
                 if let Some(_guard) = self.gc_lock.try_lock() {
                     run_gc_on_map(&self.data, self.gc_config.max_age);

@@ -6,7 +6,7 @@
 //!
 //! ```ignore
 //! use actix_web::{web, App, HttpServer};
-//! use oc_ratelimit_advanced::{
+//! use skp_ratelimit::{
 //!     middleware::actix::RateLimiter,
 //!     GCRA, Quota, MemoryStorage,
 //! };
@@ -53,7 +53,7 @@ pub struct RateLimiter<S, A> {
 
 impl<S, A> RateLimiter<S, A>
 where
-    S: Storage + Clone,
+    S: Storage,
     A: Algorithm + Clone,
 {
     /// Create a new rate limiter middleware.

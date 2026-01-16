@@ -8,7 +8,7 @@
 //! # Example
 //!
 //! ```ignore
-//! use oc_ratelimit_advanced::policy::{Policy, PenaltyPolicy, CreditPolicy};
+//! use skp_ratelimit::policy::{Policy, PenaltyPolicy, CreditPolicy};
 //!
 //! let policy = PenaltyPolicy::new(2); // Consume 2x tokens on errors
 //! ```
@@ -211,7 +211,7 @@ mod tests {
     #[test]
     fn test_penalty_policy() {
         let policy = PenaltyPolicy::new(3);
-        let quota = Quota::per_minute(100);
+        let _quota = Quota::per_minute(100);
         let decision = crate::decision::Decision::allowed(
             crate::decision::RateLimitInfo::new(100, 99, std::time::Instant::now(), std::time::Instant::now()),
         );
@@ -229,7 +229,7 @@ mod tests {
     #[test]
     fn test_credit_policy() {
         let policy = CreditPolicy::new().with_no_content();
-        let quota = Quota::per_minute(100);
+        let _quota = Quota::per_minute(100);
         let decision = crate::decision::Decision::allowed(
             crate::decision::RateLimitInfo::new(100, 99, std::time::Instant::now(), std::time::Instant::now()),
         );

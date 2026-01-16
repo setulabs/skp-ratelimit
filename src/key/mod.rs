@@ -13,7 +13,7 @@
 //! # Example
 //!
 //! ```ignore
-//! use oc_ratelimit_advanced::key::{Key, IpKey, CompositeKey};
+//! use skp_ratelimit::key::{Key, IpKey, CompositeKey};
 //!
 //! // Simple IP-based key
 //! let ip_key = IpKey::new();
@@ -25,7 +25,7 @@
 mod composite;
 mod extractors;
 
-pub use composite::CompositeKey;
+pub use composite::{CompositeKey, CompositeKey3, EitherKey, OptionalKey};
 pub use extractors::*;
 
 /// Trait for extracting rate limiting keys from requests.

@@ -73,6 +73,7 @@ pub struct AxumRequest<'a> {
 }
 
 impl<'a> AxumRequest<'a> {
+    #[allow(dead_code)]
     fn new(request: &'a Request<Body>) -> Self {
         Self { request }
     }
@@ -137,7 +138,7 @@ where
         let storage = self.storage.clone();
         let algorithm = self.algorithm.clone();
         let quota = self.quota.clone();
-        let key_extractor = self.key_extractor.clone();
+        let _key_extractor = self.key_extractor.clone();
         let mut inner = self.inner.clone();
 
         Box::pin(async move {

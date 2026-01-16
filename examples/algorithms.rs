@@ -2,10 +2,10 @@
 //!
 //! Run with:
 //! ```
-//! cargo run -p oc_ratelimit_advanced --example algorithms --features "memory all-algorithms"
+//! cargo run --example algorithms --features "memory all-algorithms"
 //! ```
 
-use oc_ratelimit_advanced::{
+use skp_ratelimit::{
     algorithm::{Algorithm, FixedWindow, SlidingWindow, TokenBucket},
     storage::MemoryStorage,
     LeakyBucket, Quota, SlidingLog, GCRA,

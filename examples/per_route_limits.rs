@@ -2,10 +2,10 @@
 //!
 //! Run with:
 //! ```
-//! cargo run -p oc_ratelimit_advanced --example per_route_limits --features memory
+//! cargo run --example per_route_limits --features memory
 //! ```
 
-use oc_ratelimit_advanced::{Algorithm, MemoryStorage, GCRA, Quota};
+use skp_ratelimit::{Algorithm, MemoryStorage, GCRA, Quota};
 use std::collections::HashMap;
 
 #[tokio::main]
