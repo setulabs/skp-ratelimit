@@ -1,0 +1,76 @@
+[package]
+categories = ["web-programming", "caching", "asynchronous"]
+description = "Advanced, modular, extensible rate limiting library with GCRA, per-route quotas, and composite keys"
+edition = "2024"
+keywords = ["rate-limit", "gcra", "api", "middleware", "throttle"]
+name = "skp-ratelimit"
+publish = true
+version = "0.1.0"
+
+# [lints]
+# workspace = true
+
+[features]
+default = ["memory", "all-algorithms"]
+
+# Storage backends
+memory = ["dashmap"]
+redis = ["dep:deadpool-redis"]
+
+# Framework integrations
+actix = ["dep:actix-web", "dep:actix-service"]
+axum = ["dep:axum", "dep:tower", "dep:http"]
+
+# Algorithms (all enabled by default)
+all-algorithms = ["gcra", "leaky-bucket", "sliding-log", "concurrent"]
+concurrent = []
+gcra = []
+leaky-bucket = []
+sliding-log = []
+
+# Convenience
+full = ["memory", "redis", "axum", "actix", "all-algorithms"]
+
+[dependencies]
+# Core dependencies
+parking_lot = { version = "0.12.5" }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = { version = "1.0.149" }
+thiserror = { version = "2.0.17" }
+tokio = { version = "1.49.0", features = ["time", "sync", "rt"] }
+tracing = { version = "0.1.44" }
+
+# Memory storage
+dashmap = { version = "6", optional = true }
+
+# Redis storage - use deadpool-redis which re-exports redis
+deadpool-redis = { version = "0.22.1", optional = true }
+
+# Axum middleware
+axum = { version = "0.8.8", optional = true }
+http = { version = "1.4.0", optional = true }
+tower = { version = "0.5.3", features = ["util"], optional = true }
+
+# Actix middleware
+actix-service = { version = "2.0.3", optional = true }
+actix-web = { version = "4.12.1", optional = true }
+
+[dev-dependencies]
+tokio = { version = "1.49.0", features = ["full", "test-util"] }
+tokio-test = "0.4.5"
+
+[[example]]
+name = "basic_gcra"
+required-features = ["memory"]
+
+[[example]]
+name = "per_route_limits"
+required-features = ["memory"]
+
+[[example]]
+name = "composite_keys"
+required-features = ["memory"]
+
+[[example]]
+name = "algorithms"
+required-features = ["memory", "all-algorithms"]
