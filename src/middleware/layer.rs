@@ -18,7 +18,8 @@ use crate::quota::Quota;
 use crate::storage::Storage;
 
 /// Tower layer for rate limiting.
-#[derive(Clone)]
+// derive(Clone) removed to allow S to be ?Clone
+
 pub struct RateLimitLayer<S, A, K> {
     storage: Arc<S>,
     algorithm: A,
@@ -34,6 +35,21 @@ impl<S, A, K> RateLimitLayer<S, A, K> {
             algorithm,
             quota,
             key_extractor,
+        }
+    }
+}
+
+impl<S, A, K> Clone for RateLimitLayer<S, A, K>
+where
+    A: Clone,
+    K: Clone,
+{
+    fn clone(&self) -> Self {
+        Self {
+            storage: self.storage.clone(),
+            algorithm: self.algorithm.clone(),
+            quota: self.quota.clone(),
+            key_extractor: self.key_extractor.clone(),
         }
     }
 }
@@ -57,13 +73,31 @@ where
 }
 
 /// The rate limiting service.
-#[derive(Clone)]
+// derive(Clone) removed to allow S to be ?Clone
+
 pub struct RateLimitService<S, A, K, Inner> {
     inner: Inner,
     storage: Arc<S>,
     algorithm: A,
     quota: Quota,
     key_extractor: K,
+}
+
+impl<S, A, K, Inner> Clone for RateLimitService<S, A, K, Inner>
+where
+    A: Clone,
+    K: Clone,
+    Inner: Clone,
+{
+    fn clone(&self) -> Self {
+        Self {
+            inner: self.inner.clone(),
+            storage: self.storage.clone(),
+            algorithm: self.algorithm.clone(),
+            quota: self.quota.clone(),
+            key_extractor: self.key_extractor.clone(),
+        }
+    }
 }
 
 /// Wrapper around Axum request for key extraction.

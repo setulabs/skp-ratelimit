@@ -117,6 +117,90 @@ pub trait Storage: Send + Sync + 'static {
     ) -> impl Future<Output = Result<bool>> + Send;
 }
 
+impl<S: Storage + ?Sized> Storage for std::sync::Arc<S> {
+    async fn get(&self, key: &str) -> Result<Option<StorageEntry>> {
+        (**self).get(key).await
+    }
+
+    async fn set(&self, key: &str, entry: StorageEntry, ttl: Duration) -> Result<()> {
+        (**self).set(key, entry, ttl).await
+    }
+
+    async fn delete(&self, key: &str) -> Result<()> {
+        (**self).delete(key).await
+    }
+
+    async fn increment(
+        &self,
+        key: &str,
+        delta: u64,
+        window_start: u64,
+        ttl: Duration,
+    ) -> Result<u64> {
+        (**self).increment(key, delta, window_start, ttl).await
+    }
+
+    async fn execute_atomic<F, T>(&self, key: &str, ttl: Duration, operation: F) -> Result<T>
+    where
+        F: FnOnce(Option<StorageEntry>) -> (StorageEntry, T) + Send,
+        T: Send,
+    {
+        (**self).execute_atomic(key, ttl, operation).await
+    }
+
+    async fn compare_and_swap(
+        &self,
+        key: &str,
+        expected: Option<&StorageEntry>,
+        new: StorageEntry,
+        ttl: Duration,
+    ) -> Result<bool> {
+        (**self).compare_and_swap(key, expected, new, ttl).await
+    }
+}
+
+impl<S: Storage + ?Sized> Storage for Box<S> {
+    async fn get(&self, key: &str) -> Result<Option<StorageEntry>> {
+        (**self).get(key).await
+    }
+
+    async fn set(&self, key: &str, entry: StorageEntry, ttl: Duration) -> Result<()> {
+        (**self).set(key, entry, ttl).await
+    }
+
+    async fn delete(&self, key: &str) -> Result<()> {
+        (**self).delete(key).await
+    }
+
+    async fn increment(
+        &self,
+        key: &str,
+        delta: u64,
+        window_start: u64,
+        ttl: Duration,
+    ) -> Result<u64> {
+        (**self).increment(key, delta, window_start, ttl).await
+    }
+
+    async fn execute_atomic<F, T>(&self, key: &str, ttl: Duration, operation: F) -> Result<T>
+    where
+        F: FnOnce(Option<StorageEntry>) -> (StorageEntry, T) + Send,
+        T: Send,
+    {
+        (**self).execute_atomic(key, ttl, operation).await
+    }
+
+    async fn compare_and_swap(
+        &self,
+        key: &str,
+        expected: Option<&StorageEntry>,
+        new: StorageEntry,
+        ttl: Duration,
+    ) -> Result<bool> {
+        (**self).compare_and_swap(key, expected, new, ttl).await
+    }
+}
+
 /// Get the current timestamp in milliseconds since Unix epoch.
 pub fn current_timestamp_ms() -> u64 {
     use std::time::{SystemTime, UNIX_EPOCH};
