@@ -133,9 +133,11 @@ impl Quota {
 
     /// Set the burst size (maximum requests that can be made instantly).
     ///
-    /// Burst must be >= max_requests.
+    /// The burst capacity determines how many requests can be made in quick
+    /// succession before rate limiting kicks in. This can be smaller than
+    /// `max_requests` to limit bursts while allowing a higher sustained rate.
     pub fn with_burst(mut self, burst: u64) -> Self {
-        self.burst = Some(burst.max(self.max_requests));
+        self.burst = Some(burst);
         self
     }
 
@@ -289,10 +291,10 @@ mod tests {
     }
 
     #[test]
-    fn test_quota_burst_minimum() {
-        // Burst should be at least max_requests
+    fn test_quota_burst_smaller_than_max() {
+        // Burst CAN be smaller than max_requests
         let quota = Quota::per_minute(60).with_burst(30);
-        assert_eq!(quota.effective_burst(), 60);
+        assert_eq!(quota.effective_burst(), 30);
     }
 
     #[test]

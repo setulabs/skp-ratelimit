@@ -78,6 +78,7 @@ impl<R> Key<R> for IpKey
 where
     R: HasIpAddr + HasHeaders,
 {
+    #[allow(clippy::collapsible_if)]
     fn extract(&self, request: &R) -> Option<String> {
         // Try real IP header first if configured
         if let Some(header) = self.real_ip_header {

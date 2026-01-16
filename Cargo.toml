@@ -56,6 +56,7 @@ actix-service = { version = "2.0.3", optional = true }
 actix-web = { version = "4.12.1", optional = true }
 
 [dev-dependencies]
+criterion = { version = "0.5", features = ["async_tokio"] }
 tokio = { version = "1.49.0", features = ["full", "test-util"] }
 tokio-test = "0.4.5"
 
@@ -74,3 +75,13 @@ required-features = ["memory"]
 [[example]]
 name = "algorithms"
 required-features = ["memory", "all-algorithms"]
+
+[[bench]]
+name = "algorithms"
+harness = false
+required-features = ["memory", "all-algorithms"]
+
+[[bench]]
+name = "storage"
+harness = false
+required-features = ["memory"]

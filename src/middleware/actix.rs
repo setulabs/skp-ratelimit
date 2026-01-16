@@ -190,6 +190,7 @@ where
 }
 
 /// Extract a rate limiting key from the request.
+#[allow(clippy::collapsible_if)]
 fn extract_key(req: &ServiceRequest) -> String {
     // Try to get client IP from various headers
     if let Some(forwarded) = req.headers().get("x-forwarded-for") {

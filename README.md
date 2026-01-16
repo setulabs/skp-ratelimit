@@ -44,6 +44,50 @@ async fn main() -> Result<()> {
 }
 ```
 
+## Quota vs Burst
+
+A **Quota** consists of two key parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `max_requests` | Sustained rate - requests allowed per time window |
+| `burst` | Instant capacity - requests allowed in quick succession |
+
+### Burst Configuration Options
+
+```rust
+// Default: burst = max_requests (10 burst, 10/sec rate)
+Quota::per_second(10)
+
+// Strict burst: limits instant requests while allowing higher sustained rate
+Quota::per_second(10).with_burst(5)   // Only 5 instant, 10/sec rate
+
+// Generous burst: allows traffic spikes, borrows from future quota
+Quota::per_second(10).with_burst(50)  // 50 instant, 10/sec rate
+```
+
+### When to Use Each
+
+| Scenario | Configuration | Reason |
+|----------|---------------|--------|
+| API protection | `burst < max_requests` | Prevent thundering herd |
+| User-facing apps | `burst > max_requests` | Better UX, forgiving spikes |
+| General use | `burst = max_requests` | Balanced (default) |
+
+### Example Flow
+
+```text
+Quota::per_second(10).with_burst(3)
+
+Time 0s:   [###.......] 3 tokens available (burst limit)
+Request 1: [##........] ✅ Allowed, 2 remaining
+Request 2: [#.........] ✅ Allowed, 1 remaining  
+Request 3: [..........] ✅ Allowed, 0 remaining
+Request 4: [..........] ❌ DENIED (wait for refill)
+~100ms later: 1 token refills (10/sec = 1 per 100ms)
+Request 5: [..........] ✅ Allowed
+```
+
 ## Per-Route Rate Limiting
 
 ```rust
@@ -145,6 +189,12 @@ cargo run --example composite_keys --features memory
 cargo run --example algorithms --features "memory all-algorithms"
 ```
 
+## Benchmarks
+
+```bash
+cargo bench --features "memory all-algorithms"
+```
+
 ## License
 
-MIT OR Apache-2.0
+MIT

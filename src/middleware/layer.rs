@@ -101,6 +101,7 @@ impl HasHeaders for AxumRequest<'_> {
 }
 
 impl HasIpAddr for AxumRequest<'_> {
+    #[allow(clippy::collapsible_if)]
     fn client_ip(&self) -> Option<std::net::IpAddr> {
         // Try to get from extensions (set by outer middleware)
         // For now, try parsing from X-Forwarded-For or X-Real-IP
