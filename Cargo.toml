@@ -1,5 +1,12 @@
 [package]
-categories = ["web-programming", "caching", "asynchronous"]
+categories = [
+    "web-programming",
+    "ratelimiting",
+    "api",
+    "middleware",
+    "caching",
+    "asynchronous",
+]
 description = "Advanced, modular, extensible rate limiting library with GCRA, per-route quotas, and composite keys"
 edition = "2024"
 keywords = ["rate-limit", "gcra", "api", "middleware", "throttle"]
@@ -7,6 +14,8 @@ license = "MIT"
 name = "skp-ratelimit"
 publish = true
 version = "0.1.0"
+repository = "https://github.com/setulabs/skp-ratelimit"
+homepage = "https://www.setulab.com/projects"
 
 # [lints]
 
