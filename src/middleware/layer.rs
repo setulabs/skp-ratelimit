@@ -40,7 +40,6 @@ impl<S, A, K> RateLimitLayer<S, A, K> {
 
 impl<S, A, K, Inner> Layer<Inner> for RateLimitLayer<S, A, K>
 where
-    S: Clone,
     A: Clone,
     K: Clone,
 {
